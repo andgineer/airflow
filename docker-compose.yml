@@ -1,0 +1,125 @@
+version: '3.4'
+
+x-proxies: &proxies
+  no_proxy:
+  http_proxy:
+  https_proxy:
+  NO_PROXY:
+  HTTP_PROXY:
+  HTTPS_PROXY:
+
+x-workers-config: &workers-config
+  WORKERS_XCHNG_FOLDER: /xchng
+
+x-airflow-config: &airflow-config
+  AIRFLOW__CORE__DAGS_FOLDER: /etl
+  AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+  AIRFLOW__CORE__FERNET_KEY: MJNz36Q8222VOQhBOmBROFrmeSxNOgTCMaVp2_HOtE0=
+  AIRFLOW__CORE__HOSTNAME_CALLABLE: airflow.utils.net:get_host_ip_address
+  AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgres+psycopg2://airflow:airflow@airflow-db:5432/airflow
+
+  AIRFLOW__CORE__PARALLELISM: 128
+  AIRFLOW__CORE__DAG_CONCURRENCY: 16
+  AIRFLOW__CORE__MAX_ACTIVE_RUNS_PER_DAG: 4
+  AIRFLOW__CORE__LOAD_EXAMPLES: 'False'
+  AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS: 'False'
+
+  AIRFLOW__EMAIL__DEFAULT_EMAIL_ON_RETRY: 'False'
+  AIRFLOW__EMAIL__DEFAULT_EMAIL_ON_FAILURE: 'False'
+
+  AIRFLOW__CELERY__BROKER_URL: redis://airflow-broker:6379/0
+  AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@airflow-db/airflow
+
+# https://hub.docker.com/r/apache/airflow/dockerfile
+x-airflow-base: &airflow-base
+  image: apache/airflow:1.10.10-python3.7
+  entrypoint: /bin/bash
+
+x-airflow-volumes: &airflow-volumes
+  volumes:
+    - ./xchng:/xchng
+    - ./etl:/etl
+    - ./requirements.txt:/requirements.txt
+    - ./etl/logs:/opt/airflow/logs
+# Airflow can get logs from worker by API so if they are on different machines we do not have to share
+# logs folder
+
+x-airflow-env-filess: &airflow-env-files
+  env_file:
+    - env/dev-postgres.env
+    - env/airflow-connections.env
+
+services:
+
+  # Redis as a Celery broker
+  airflow-broker:
+    image: redis:6.0.5-alpine
+
+  # DB for the Airflow metadata
+  airflow-db:
+    image: postgres:10.13-alpine
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    volumes:
+      - postgres-airflow:/var/lib/postgresql/data
+    expose:
+      - 5432
+
+  # Main container with Airflow Webserver, Scheduler, Celery Flower
+  airflow:
+    build:
+      context: ./
+      dockerfile: docker/airflow/Dockerfile
+    <<: *airflow-volumes
+    environment:
+      <<: *airflow-config
+      <<: *proxies
+      AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 30
+      AIRFLOW__SCHEDULER__CATCHUP_BY_DEFAULT: 'False'
+      AIRFLOW__SCHEDULER__MAX_THREADS: 8
+      AIRFLOW__WEBSERVER__LOG_FETCH_TIMEOUT_SEC: 10
+    <<: *airflow-env-files
+    depends_on:
+      - airflow-db
+      - airflow-broker
+    command: >
+      -c " sleep 10 &&
+           pip install --user -r /requirements.txt &&
+           # airflow connections --add --conn_id dev_db --conn_uri $$AIRFLOW_CONN_DEV_DB &&
+           # You can add ENV-defined connections to DB to be visible in Airflow WebUI
+           /entrypoint initdb &&
+          (/entrypoint webserver &) &&
+          (/entrypoint flower &) &&
+           /entrypoint scheduler"
+    ports:
+      # Celery Flower
+      - 5551:5555
+      # Airflow Webserver
+      - 8080:8080
+
+  # Celery worker, will be scaled using `--scale=n`
+  airflow-worker:
+    build:
+      context: ./
+      dockerfile: docker/worker/Dockerfile
+    <<: *airflow-volumes
+    environment:
+      <<: *airflow-config
+      <<: *proxies
+      <<: *workers-config
+    <<: *airflow-env-files
+    command: >
+      -c " sleep 10 &&
+           pip install --user -r /requirements.txt &&
+           /entrypoint worker"
+    ports:
+      - 8793:8793
+    depends_on:
+      - airflow
+      - airflow-db
+      - airflow-broker
+
+volumes:
+  postgres-airflow:
