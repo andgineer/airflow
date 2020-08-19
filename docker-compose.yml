@@ -8,6 +8,11 @@ x-proxies: &proxies
   HTTP_PROXY:
   HTTPS_PROXY:
 
+x-airflow-db: &airflow-db
+  POSTGRES_USER: airflow
+  POSTGRES_PASSWORD: airflow
+  POSTGRES_DB: airflow
+
 x-workers-config: &workers-config
   WORKERS_XCHNG_FOLDER: /xchng
 
@@ -16,9 +21,9 @@ x-airflow-config: &airflow-config
   AIRFLOW__CORE__EXECUTOR: CeleryExecutor
   AIRFLOW__CORE__FERNET_KEY: MJNz36Q8222VOQhBOmBROFrmeSxNOgTCMaVp2_HOtE0=
   AIRFLOW__CORE__HOSTNAME_CALLABLE: airflow.utils.net:get_host_ip_address
-  AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgres+psycopg2://airflow:airflow@airflow-db:5432/airflow
-
+  AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgres+psycopg2://$${POSTGRES_USER}:$${POSTGRES_PASSWORD}@airflow-db:5432/$${POSTGRES_DB}
   AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'False'
+
   AIRFLOW__CORE__PARALLELISM: 128
   AIRFLOW__CORE__DAG_CONCURRENCY: 16
   AIRFLOW__CORE__MAX_ACTIVE_RUNS_PER_DAG: 4
@@ -31,7 +36,7 @@ x-airflow-config: &airflow-config
   AIRFLOW__EMAIL__DEFAULT_EMAIL_ON_FAILURE: 'False'
 
   AIRFLOW__CELERY__BROKER_URL: redis://airflow-broker:6379/0
-  AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@airflow-db/airflow
+  AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://$${POSTGRES_USER}:$${POSTGRES_PASSWORD}@airflow-db/$${POSTGRES_DB}
 
 # https://hub.docker.com/r/apache/airflow/dockerfile
 x-airflow-base: &airflow-base
@@ -47,9 +52,8 @@ x-airflow-volumes: &airflow-volumes
 # Airflow can get logs from worker by API so if they are on different machines we do not have to share
 # logs folder
 
-x-airflow-env-filess: &airflow-env-files
+x-airflow-env-files: &airflow-env-files
   env_file:
-    - env/dev-postgres.env
     - env/airflow-connections.env
 
 services:
@@ -62,9 +66,7 @@ services:
   airflow-db:
     image: postgres:10.13-alpine
     environment:
-      - POSTGRES_USER=airflow
-      - POSTGRES_PASSWORD=airflow
-      - POSTGRES_DB=airflow
+      <<: *airflow-db
     volumes:
       - postgres-airflow:/var/lib/postgresql/data
     expose:
@@ -77,12 +79,9 @@ services:
       dockerfile: docker/airflow/Dockerfile
     <<: *airflow-volumes
     environment:
+      <<: *airflow-db
       <<: *airflow-config
       <<: *proxies
-      AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 30
-      AIRFLOW__SCHEDULER__CATCHUP_BY_DEFAULT: 'False'
-      AIRFLOW__SCHEDULER__MAX_THREADS: 8
-      AIRFLOW__WEBSERVER__LOG_FETCH_TIMEOUT_SEC: 10
     <<: *airflow-env-files
     depends_on:
       - airflow-db
@@ -109,6 +108,7 @@ services:
       dockerfile: docker/worker/Dockerfile
     <<: *airflow-volumes
     environment:
+      <<: *airflow-db
       <<: *airflow-config
       <<: *proxies
       <<: *workers-config
