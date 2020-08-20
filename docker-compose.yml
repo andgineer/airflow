@@ -8,53 +8,29 @@ x-proxies: &proxies
   HTTP_PROXY:
   HTTPS_PROXY:
 
-x-airflow-db: &airflow-db
-  POSTGRES_USER: airflow
-  POSTGRES_PASSWORD: airflow
-  POSTGRES_DB: airflow
-
-x-workers-config: &workers-config
-  WORKERS_XCHNG_FOLDER: /xchng
-
-x-airflow-config: &airflow-config
-  AIRFLOW__CORE__DAGS_FOLDER: /etl
-  AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-  AIRFLOW__CORE__FERNET_KEY: MJNz36Q8222VOQhBOmBROFrmeSxNOgTCMaVp2_HOtE0=
-  AIRFLOW__CORE__HOSTNAME_CALLABLE: airflow.utils.net:get_host_ip_address
-  AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgres+psycopg2://$${POSTGRES_USER}:$${POSTGRES_PASSWORD}@airflow-db:5432/$${POSTGRES_DB}
-  AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'False'
-
-  AIRFLOW__CORE__PARALLELISM: 128
-  AIRFLOW__CORE__DAG_CONCURRENCY: 16
-  AIRFLOW__CORE__MAX_ACTIVE_RUNS_PER_DAG: 4
-  AIRFLOW__CORE__LOAD_EXAMPLES: 'False'
-  AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS: 'False'
-
-  AIRFLOW__SCHEDULER__CATCHUP_BY_DEFAULT: 'False'
-
-  AIRFLOW__EMAIL__DEFAULT_EMAIL_ON_RETRY: 'False'
-  AIRFLOW__EMAIL__DEFAULT_EMAIL_ON_FAILURE: 'False'
-
-  AIRFLOW__CELERY__BROKER_URL: redis://airflow-broker:6379/0
-  AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://$${POSTGRES_USER}:$${POSTGRES_PASSWORD}@airflow-db/$${POSTGRES_DB}
-
-# https://hub.docker.com/r/apache/airflow/dockerfile
-x-airflow-base: &airflow-base
-  image: apache/airflow:1.10.10-python3.7
-  entrypoint: /bin/bash
+x-airflow-connections: &airflow-connections
+  ETL_DB_SCHEMA:
+  ETL_DB_HOST:
+  ETL_DB_USER:
+  ETL_DB_PASSWORD:
+  ETL_DB_DB:
+  DEV_DB_SCHEMA:
+  DEV_DB_HOST:
+  DEV_DB_USER:
+  DEV_DB_PASSWORD:
+  DEV_DB_DB:
+  AIRFLOW_DB_SCHEMA:
+  AIRFLOW_DB_HOST:
+  POSTGRES_USER:
+  POSTGRES_PASSWORD:
+  POSTGRES_DB:
+  ETL_DB_URL: "${ETL_DB_SCHEMA}://${ETL_DB_USER}:${ETL_DB_PASSWORD}@${ETL_DB_HOST}/${ETL_DB_DB}"
 
 x-airflow-volumes: &airflow-volumes
   volumes:
-    - ./xchng:/xchng
     - ./etl:/etl
-    - ./requirements.txt:/requirements.txt
     - ./etl/logs:/opt/airflow/logs
-# Airflow can get logs from worker by API so if they are on different machines we do not have to share
-# logs folder
-
-x-airflow-env-files: &airflow-env-files
-  env_file:
-    - env/airflow-connections.env
+    - ./alembic:/alembic
 
 services:
 
@@ -64,37 +40,36 @@ services:
 
   # DB for the Airflow metadata
   airflow-db:
-    image: postgres:10.13-alpine
-    environment:
-      <<: *airflow-db
+    build:
+      context: ./
+      dockerfile: docker/airflow-db/Dockerfile
     volumes:
       - postgres-airflow:/var/lib/postgresql/data
-    expose:
-      - 5432
+    env_file:
+      - env/airflow_db.env
+    ports:
+      - 5431:5432
 
   # Main container with Airflow Webserver, Scheduler, Celery Flower
   airflow:
     build:
       context: ./
       dockerfile: docker/airflow/Dockerfile
+      args:
+        <<: *proxies
     <<: *airflow-volumes
     environment:
-      <<: *airflow-db
-      <<: *airflow-config
-      <<: *proxies
-    <<: *airflow-env-files
+      <<: *airflow-connections
     depends_on:
       - airflow-db
       - airflow-broker
     command: >
-      -c " sleep 10 &&
-           pip install --user -r /requirements.txt &&
-           # airflow connections --add --conn_id dev_db --conn_uri $$AIRFLOW_CONN_DEV_DB &&
-           # You can add ENV-defined connections to DB to be visible in Airflow WebUI
-           /entrypoint initdb &&
+      -c "/entrypoint initdb &&
+          airflow variables --set dbs_to_update "dev_db" &&
+          airflow connections --add --conn_id dev_db --conn_uri "$${DEV_DB_SCHEMA}://$${DEV_DB_USER}:$${DEV_DB_PASSWORD}@$${DEV_DB_HOST}/$${DEV_DB_DB}" &&
           (/entrypoint webserver &) &&
           (/entrypoint flower &) &&
-           /entrypoint scheduler"
+          /entrypoint scheduler"
     ports:
       # Celery Flower
       - 5551:5555
@@ -108,14 +83,10 @@ services:
       dockerfile: docker/worker/Dockerfile
     <<: *airflow-volumes
     environment:
-      <<: *airflow-db
-      <<: *airflow-config
-      <<: *proxies
-      <<: *workers-config
-    <<: *airflow-env-files
+      <<: *airflow-connections
+    # wait for Airflow DB to be be initialized in airflow container
     command: >
-      -c " sleep 10 &&
-           pip install --user -r /requirements.txt &&
+       -c " sleep 10 &&
            /entrypoint worker"
     ports:
       - 8793:8793

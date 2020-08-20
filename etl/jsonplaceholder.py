@@ -62,5 +62,5 @@ for downloader in downloaders:
             provide_context=True,
             op_kwargs={'conn_id': db_to_update},
         )
-        for db_to_update in dbs_to_update
+        for db_to_update in dbs_to_update()
     ]

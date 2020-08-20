@@ -20,6 +20,15 @@ For airflow workers we should define env vars:
 of workers on separate machines. We use this folder to share big files (megabytes)
 between tasks.
 
+## DBs
+
+We create DB for ETL tasks on the same server as airflow DB
+(postgres in `airflow-db`).
+Add it to airflow env connection as `etl_db`.
+
+And add to airflow env connection to some `dev DB` as `dev_db`.
+Assuming this is business DB our ETL should work with. 
+
 ## Scaling workers
 
 We can use `docker-compose` key `--scale` but better add more machines with workers.
