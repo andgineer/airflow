@@ -7,7 +7,7 @@
 #
 
 set -o allexport  # enables all following variable definitions to be exported
-for env_file in env/airflow_db.env env/etl_db.env env/bb_db_local.env; do
+for env_file in env/airflow_db.env env/etl_db.env env/dev_db.env; do
   source $env_file
 done
 set +o allexport

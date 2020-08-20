@@ -11,11 +11,12 @@ default_args = {
 
 
 def dbs_to_update():
-    # todo remove "KeyError: 'Variable dbs_to_update does not exist'"
-    # The error happens during airflow initdb when we did not created the variable yet.
+    # Error "KeyError: 'Variable dbs_to_update does not exist'"
+    # during airflow initdb.
     # We cannot create the variable before initdb because we need DB to create it %-(
     # I do not want to suppress the error because I want it to indicate if the DAG cannot run.
     # Why DB migrations load (and run!) DAGs at all?!
     # May be we can understand that we are in initdb mode? But we need to load DAG also in Worker..
-    # The error happens only at Airflow DB creation. Just ignore it for the moment.
+    # The ticket for this bug is being open for one year
+    # https://issues.apache.org/jira/browse/AIRFLOW-5576
     yield from Variable.get('dbs_to_update').split(',')
