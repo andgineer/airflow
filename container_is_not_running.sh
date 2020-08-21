@@ -10,7 +10,7 @@
 function container_is_not_running {
   ENV=${2-""}
 
-  if [[ -z `docker ps -q --no-trunc | grep $(./docker$ENV.sh ps -q $1)` ]]; then
+  if [[ -z `docker ps -q --no-trunc | grep $(./compose$ENV.sh ps -q $1)` ]]; then
       echo "$1 container from <$ENV> env is not running."
       return 0  # success EXIT code
     else
