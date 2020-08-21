@@ -6,8 +6,8 @@
 # Example
 #  ./up.sh airflow-db
 
-./docker.sh \
+./compose.sh \
   up -d --build \
   "$@"
 
-./docker.sh logs -f "$@"
+./compose.sh logs -f "$@"

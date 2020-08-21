@@ -2,4 +2,4 @@
 #
 # stops all containers but postgres
 #
-./docker.sh stop airflow airflow-broker airflow-worker
+./compose.sh stop airflow airflow-broker airflow-worker

@@ -5,7 +5,7 @@
 # Example:
 #   exec.sh airflow
 
-./docker.sh \
+./compose.sh \
   exec \
   "$@" \
   bash

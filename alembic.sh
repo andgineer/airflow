@@ -17,7 +17,7 @@ if container_is_not_running ${SERVICE_NAME} ; then
     bash -c \
     "cd / && PYTHONPATH=. alembic $args"
 else
-  ./docker.sh \
+  ./compose.sh \
     exec \
     ${SERVICE_NAME} \
     bash -c \

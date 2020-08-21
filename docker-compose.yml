@@ -1,5 +1,6 @@
 version: '3.4'
 
+# we use env vars values from host. see source_env.sh
 x-proxies: &proxies
   no_proxy:
   http_proxy:
@@ -9,22 +10,10 @@ x-proxies: &proxies
   HTTPS_PROXY:
 
 x-airflow-connections: &airflow-connections
-  ETL_DB_SCHEMA:
-  ETL_DB_HOST:
-  ETL_DB_USER:
-  ETL_DB_PASSWORD:
-  ETL_DB_DB:
-  DEV_DB_SCHEMA:
-  DEV_DB_HOST:
-  DEV_DB_USER:
-  DEV_DB_PASSWORD:
-  DEV_DB_DB:
-  AIRFLOW_DB_SCHEMA:
-  AIRFLOW_DB_HOST:
-  POSTGRES_USER:
-  POSTGRES_PASSWORD:
-  POSTGRES_DB:
-  ETL_DB_URL: "${ETL_DB_SCHEMA}://${ETL_DB_USER}:${ETL_DB_PASSWORD}@${ETL_DB_HOST}/${ETL_DB_DB}"
+  DEV_DB_URL:
+  AIRFLOW_DB_PATH:
+  AIRFLOW_DB_URL:
+  ETL_DB_URL:
 
 x-airflow-volumes: &airflow-volumes
   volumes:
@@ -45,8 +34,10 @@ services:
       dockerfile: docker/airflow-db/Dockerfile
     volumes:
       - postgres-airflow:/var/lib/postgresql/data
-    env_file:
-      - env/airflow_db.env
+    environment:
+      POSTGRES_USER: ${AIRFLOW_DB_USER}
+      POSTGRES_PASSWORD: ${AIRFLOW_DB_PASSWORD}
+      POSTGRES_DB: ${AIRFLOW_DB_DB}
     ports:
       - 5431:5432
 
@@ -66,7 +57,7 @@ services:
     command: >
       -c "/entrypoint initdb &&
           airflow variables --set dbs_to_update "dev_db" &&
-          airflow connections --add --conn_id dev_db --conn_uri "$${DEV_DB_SCHEMA}://$${DEV_DB_USER}:$${DEV_DB_PASSWORD}@$${DEV_DB_HOST}/$${DEV_DB_DB}" &&
+          airflow connections --add --conn_id dev_db --conn_uri "$${DEV_DB_URL}" &&
           (/entrypoint webserver &) &&
           (/entrypoint flower &) &&
           /entrypoint scheduler"

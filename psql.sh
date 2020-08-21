@@ -1,11 +1,12 @@
 #! /usr/bin/env bash
 #
-# run psql in postgres container
+# run psql for ETL DB in postgres container
 #
-POSTGRES_CREDENTIALS="env/etl_db.env"
 POSTGRES_SERVICE_NAME="airflow-db"
-
-export $(grep -v '^#' ${POSTGRES_CREDENTIALS} | xargs)
+CREDENTIALS="env/etl_db.env"
+export $(grep -v '^#' ${CREDENTIALS} | xargs)  # this line should be before we use $ETL_DB_*
+POSTGRES_USER=${ETL_DB_USER}
+POSTGRES_DB=${ETL_DB_USER}
 
 source container_is_not_running.sh
 
