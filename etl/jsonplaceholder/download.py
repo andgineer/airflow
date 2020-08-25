@@ -8,7 +8,10 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from json import JSONDecodeError
+from airflow.exceptions import AirflowSkipException
+import logging
 
+log = logging.getLogger()
 
 engine = create_engine("sqlite:///:memory:", echo=True)
 Base = declarative_base()
@@ -38,7 +41,8 @@ def download(download_date: datetime):
     try:
         return response.json()
     except JSONDecodeError:
-        return {}
+        log.exception(f'Bad JSON:\n{response.text}')
+        raise AirflowSkipException('Bad response')  # fail without retrying
 
 
 if __name__ == '__main__':

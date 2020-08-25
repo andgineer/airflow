@@ -1,4 +1,4 @@
-# Apach Airflow
+# Apache Airflow
 
 Template for local debugging Apache Airflow DAGs.
 You can start local Airflow scheduler and workers with live reload of DAGs.
@@ -26,7 +26,7 @@ We create DB for ETL tasks on the same server as airflow DB
 (postgres in `airflow-db`).
 Add it to airflow env connection as `etl_db`.
 
-And add to airflow env connection to some `dev DB` as `dev_db`.
+And add to airflow env connection to some `dev DB` as `db_dev`.
 Assuming this is business DB our ETL should work with. 
 
 ## Scaling workers
@@ -38,3 +38,13 @@ We can use `docker-compose` key `--scale` but better add more machines with work
     export AIRFLOW__CORE__DAGS_FOLDER=$PWD/etl/
     airflow initdb  # init local SQLite DB
     airflow --help
+
+### Create migration script
+
+```console
+# compare DB models and current DB and create DB upgrade script in alembic/versions
+./alembic.sh revision --autogenerate -m \"Schema changes.\"
+
+# apply script to the DB so after that DB meta data will reflect DB models  
+./alembic.sh upgrade head
+```

@@ -15,11 +15,11 @@ if container_is_not_running ${SERVICE_NAME} ; then
   ./run.sh \
     ${SERVICE_NAME} \
     bash -c \
-    "cd / && PYTHONPATH=. alembic $args"
+    "cd / && PYTHONPATH=etl alembic $args"
 else
   ./compose.sh \
     exec \
     ${SERVICE_NAME} \
     bash -c \
-    "cd / && PYTHONPATH=. alembic $args"
+    "cd / && PYTHONPATH=etl alembic $args"
 fi

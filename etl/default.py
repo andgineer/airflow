@@ -1,6 +1,10 @@
 from datetime import datetime
-from airflow.models import Variable
+from airflow.models import Connection
+from airflow import settings
+from typing import Iterable
 
+
+DB_CONN_PREFIX='db_'
 
 default_args = {
     'owner': 'airflow',
@@ -11,12 +15,13 @@ default_args = {
 
 
 def dbs_to_update():
-    # Error "KeyError: 'Variable dbs_to_update does not exist'"
-    # during airflow initdb.
-    # We cannot create the variable before initdb because we need DB to create it %-(
-    # I do not want to suppress the error because I want it to indicate if the DAG cannot run.
-    # Why DB migrations load (and run!) DAGs at all?!
-    # May be we can understand that we are in initdb mode? But we need to load DAG also in Worker..
-    # The ticket for this bug is being open for one year
-    # https://issues.apache.org/jira/browse/AIRFLOW-5576
-    yield from Variable.get('dbs_to_update').split(',')
+    """
+    Airflow Connections with conn_id started with `BB_DB_CONN_PREFIX`
+    """
+    session = settings.Session()
+    conns: Iterable[Connection] = (
+        session.query(Connection.conn_id)
+        .filter(Connection.conn_id.ilike(f'{DB_CONN_PREFIX}%'))
+        .all()
+    )
+    return [conn.conn_id for conn in conns]

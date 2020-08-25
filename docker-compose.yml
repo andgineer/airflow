@@ -54,13 +54,6 @@ services:
     depends_on:
       - airflow-db
       - airflow-broker
-    command: >
-      -c "/entrypoint initdb &&
-          airflow variables --set dbs_to_update "dev_db" &&
-          airflow connections --add --conn_id dev_db --conn_uri "$${DEV_DB_URL}" &&
-          (/entrypoint webserver &) &&
-          (/entrypoint flower &) &&
-          /entrypoint scheduler"
     ports:
       # Celery Flower
       - 5551:5555

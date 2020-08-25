@@ -4,9 +4,11 @@
 #
 POSTGRES_SERVICE_NAME="airflow-db"
 CREDENTIALS="env/etl_db.env"
-export $(grep -v '^#' ${CREDENTIALS} | xargs)  # this line should be before we use $ETL_DB_*
+. ./source_env.sh  # this line should be before we use env vars
 POSTGRES_USER=${ETL_DB_USER}
-POSTGRES_DB=${ETL_DB_USER}
+POSTGRES_DB=${ETL_DB_DB}
+
+echo "Service ${POSTGRES_SERVICE_NAME} user $POSTGRES_USER data $POSTGRES_DB"
 
 source container_is_not_running.sh
 

@@ -5,6 +5,6 @@
 # Examples:
 # run.sh airflow
 
-./docker-compose.sh \
+./compose.sh \
   run --no-deps --rm \
   "$@"

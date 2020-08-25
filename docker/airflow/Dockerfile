@@ -25,3 +25,7 @@ COPY alembic.ini /
 
 COPY requirements.txt /
 RUN pip install --user -r /requirements.txt
+
+COPY docker/airflow/start.sh /
+
+CMD ["/start.sh"]
