@@ -3,10 +3,11 @@
 # Init DBs, Airflow Connections, start Airflow Scheduler, webUI & Flower
 #
 
-/entrypoint initdb
-airflow connections --add --conn_id db_dev --conn_uri "${DEV_DB_URL}"
+airflow initdb
+airflow connections --add --conn_id dev_db --conn_uri "${DEV_DB_URL}"
+airflow connections --add --conn_id file_local --conn_extra "{\"path\": \"/ingest\"}" --conn_type fs
 cd /
 PYTHONPATH=/etl alembic upgrade head
-(/entrypoint webserver &)
-(/entrypoint flower &)
-/entrypoint scheduler
+(airflow webserver &)
+(airflow flower &)
+airflow scheduler

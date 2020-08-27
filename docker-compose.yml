@@ -41,6 +41,14 @@ services:
     ports:
       - 5431:5432
 
+  # Base Airflow image
+  airflow-base:
+    build:
+      context: docker/airflow-base/
+      args:
+        <<: *proxies
+    image: airflow-base
+
   # Main container with Airflow Webserver, Scheduler, Celery Flower
   airflow:
     build:
@@ -64,7 +72,7 @@ services:
   airflow-worker:
     build:
       context: ./
-      dockerfile: docker/worker/Dockerfile
+      dockerfile: docker/airflow-worker/Dockerfile
     <<: *airflow-volumes
     environment:
       <<: *airflow-connections
