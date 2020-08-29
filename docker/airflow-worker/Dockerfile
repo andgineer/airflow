@@ -1,4 +1,4 @@
-FROM airflow-base
+FROM airflow
 
 COPY start.sh /
 RUN chmod +x /start.sh

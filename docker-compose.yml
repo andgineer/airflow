@@ -40,25 +40,13 @@ services:
     ports:
       - 5431:5432
 
-  # Base Airflow image
-  airflow-base:
-    build:
-      context: docker/airflow-base/
-      args:
-        <<: *proxies
-    image: airflow-base
-    environment:
-      <<: *airflow-connections
-    restart: "no"
-    depends_on:
-      - airflow-db
-
   # Main container with Airflow Webserver, Scheduler, Celery Flower
   airflow:
     build:
       context: docker/airflow/
       args:
         <<: *proxies
+    image: airflow
     <<: *airflow-volumes
     environment:
       <<: *airflow-connections

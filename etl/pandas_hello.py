@@ -1,7 +1,6 @@
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.models.taskinstance import TaskInstance
-from airflow.utils.dates import days_ago
 from datetime import timedelta
 from _default import default_args
 
@@ -19,8 +18,7 @@ def word_dataset_task(task_instance: TaskInstance, word: str, **kwargs):
 
 
 def merge_task(task_instance: TaskInstance, **kwargs):
-    word = task_instance.xcom_pull()
-    print(word)
+    return task_instance.xcom_pull(task_ids=['hello_dataset', 'pandas_dataset'])
 
 
 pandas_dataset = PythonOperator(
@@ -32,7 +30,7 @@ pandas_dataset = PythonOperator(
 )
 hello_dataset = PythonOperator(
     dag=dag,
-    task_id='pandas_dataset',
+    task_id='hello_dataset',
     python_callable=word_dataset_task,
     provide_context=True,
     op_kwargs={'word': 'Hello'},
