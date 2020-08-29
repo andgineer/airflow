@@ -1,5 +1,11 @@
 FROM andgineer/airflow-conda
 
+# we mount this as volume for live reload on changes for debugging
+VOLUME /root/airflow/dags
+
+# Flower
+EXPOSE 5555
+
 COPY airflow.cfg ${AIRFLOW_HOME}/
 COPY alembic.ini /
 

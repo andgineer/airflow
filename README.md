@@ -46,6 +46,7 @@ We can use `docker-compose` key `--scale` but better add more machines with work
 
 ### Testing airflow tasks
 
+    . ./activate.sh
     pytest
 
 ### Create migration script
