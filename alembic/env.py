@@ -24,8 +24,8 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from etl.db.base import Base  # noqa
-from etl.db.models import *
+from db.models.base import Base  # noqa
+from db.models import *
 
 
 target_metadata = Base.metadata

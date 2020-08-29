@@ -3,7 +3,7 @@
 # Do not forget to source it so the variables will be set in you session.
 #
 # Examples:
-#   . ./source_env.sh
+#   . ./export_vars.sh
 #
 
 set -o allexport  # enables all following variable definitions to be exported

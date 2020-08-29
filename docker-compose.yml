@@ -1,6 +1,6 @@
 version: '3.4'
 
-# we use env vars values from host. see source_env.sh
+# we use env vars values from host. see export_vars.sh
 x-proxies: &proxies
   no_proxy:
   http_proxy:
@@ -30,8 +30,7 @@ services:
   # DB for the Airflow metadata
   airflow-db:
     build:
-      context: ./
-      dockerfile: docker/airflow-db/Dockerfile
+      context: docker/airflow-db/
     volumes:
       - postgres-airflow:/var/lib/postgresql/data
     environment:
@@ -48,12 +47,16 @@ services:
       args:
         <<: *proxies
     image: airflow-base
+    environment:
+      <<: *airflow-connections
+    restart: "no"
+    depends_on:
+      - airflow-db
 
   # Main container with Airflow Webserver, Scheduler, Celery Flower
   airflow:
     build:
-      context: ./
-      dockerfile: docker/airflow/Dockerfile
+      context: docker/airflow/
       args:
         <<: *proxies
     <<: *airflow-volumes
@@ -71,15 +74,12 @@ services:
   # Celery worker, will be scaled using `--scale=n`
   airflow-worker:
     build:
-      context: ./
-      dockerfile: docker/airflow-worker/Dockerfile
+      context: docker/airflow-worker/
+      args:
+        <<: *proxies
     <<: *airflow-volumes
     environment:
       <<: *airflow-connections
-    # wait for Airflow DB to be be initialized in airflow container
-    command: >
-       -c " sleep 10 &&
-           /entrypoint worker"
     ports:
       - 8793:8793
     depends_on:

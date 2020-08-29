@@ -1,5 +1,5 @@
 import pytest
-from cdf_config import Config
+from _config import Config
 
 
 class TestConfig(Config):

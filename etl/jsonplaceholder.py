@@ -10,7 +10,7 @@ from airflow.models.taskinstance import TaskInstance
 # from airflow.utils.helpers import cross_downstream
 import jsonplaceholder
 from datetime import datetime, timedelta, timezone
-from default import default_args, dbs_to_update
+from _default import default_args, dbs_to_update
 
 
 dag = DAG(

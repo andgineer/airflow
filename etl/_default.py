@@ -19,9 +19,12 @@ def dbs_to_update():
     Airflow Connections with conn_id started with `BB_DB_CONN_PREFIX`
     """
     session = settings.Session()
-    conns: Iterable[Connection] = (
-        session.query(Connection.conn_id)
-        .filter(Connection.conn_id.ilike(f'{DB_CONN_PREFIX}%'))
-        .all()
-    )
+    try:
+        conns: Iterable[Connection] = (
+            session.query(Connection.conn_id)
+            .filter(Connection.conn_id.ilike(f'{DB_CONN_PREFIX}%'))
+            .all()
+        )
+    finally:
+        session.commit()
     return [conn.conn_id for conn in conns]

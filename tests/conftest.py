@@ -11,3 +11,8 @@ from pathlib import Path
 modules_load.asterisk(Path(__file__).parent / 'fixtures', 'fixtures', globals())
 
 log = logging.getLogger()
+
+
+def pytest_generate_tests(metafunc):
+    os.environ['AIRFLOW__CORE__DAGS_FOLDER'] = './etl'
+    os.environ['AIRFLOW_HOME'] = './tests/airflow_home'

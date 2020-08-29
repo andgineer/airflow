@@ -5,7 +5,7 @@
 #   compose.sh logs airflow
 #
 
-. ./source_env.sh
+. ./export_vars.sh
 
 docker-compose \
   "$@"

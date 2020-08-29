@@ -26,7 +26,7 @@ if type conda 2>/dev/null; then
       conda activate ${ENV_NAME}
       conda install -y -c conda-forge rdkit
       conda install -y pip
-      pip install -r requirements.txt
+      pip install -r docker/airflow-base/requirements.txt
       pip install -r test_requirements.txt
       conda deactivate  # RE-activate conda env so python will have access to conda installed deps
     fi

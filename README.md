@@ -1,7 +1,22 @@
-# Apache Airflow
+# Apache Airflow + Anaconda
 
 Template for local debugging Apache Airflow DAGs.
 You can start local Airflow scheduler and workers with live reload of DAGs.
+
+Minicoda already installed so you can use any machine learning or data-science
+package from Anaconda in your ETL. And easily create complex pipelines for
+your science projects.
+
+[Apache Airflow](https://airflow.apache.org/docs/stable/) is a workflow management platform. 
+This makes it easier to build data pipelines, monitor them, and perform ETL operations. 
+
+Airflow pipelines are configuration as Python code, allowing for dynamic pipeline generation. 
+
+Apache Airflow provides you [WebUI](https://airflow.apache.org/docs/stable/ui.html)
+and [command-line interface](https://airflow.apache.org/docs/stable/usage-cli.html).
+
+So you if you don't have specific DAG you can quickly solve any task manually 
+combining your existed DAGs.
 
 ## How to run
 
