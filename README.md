@@ -28,7 +28,7 @@ changes live update your DAGs.
 
 ## DUGs
 
-I created demo-DAG `HelloPandas` so you can see that everything is workings.
+I created demo-DAG `HelloPandas` so you can see that everything is working.
 In the `merge` task logs you should see `Done. Returned value was: ('Hello', 'Pandas')`.
 
 ## DBs
@@ -49,10 +49,13 @@ We can use `docker-compose` key `--scale` but better add more machines with work
     . ./activate.sh
     pytest
 
-### Create migration script
+### Create migration script for ETL DB
+
+Describe your SQLAlchemy objects in `etl/db/models`.
+All models should inherits from `db.models.Base`.
 
 ```console
-# compare DB models and current DB and create DB upgrade script in alembic/versions
+# compare DB models and current ETL DB and create DB upgrade script in alembic/versions
 ./alembic.sh revision --autogenerate -m \"Schema changes.\"
 
 # apply script to the DB so after that DB meta data will reflect DB models  
