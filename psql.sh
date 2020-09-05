@@ -19,7 +19,7 @@ case $1 in
           ;;
 esac
 
-echo "Service ${POSTGRES_SERVICE_NAME} user $POSTGRES_USER data $POSTGRES_DB"
+echo "Service: ${POSTGRES_SERVICE_NAME}, user: $POSTGRES_USER, db: $POSTGRES_DB"
 
 source container_is_not_running.sh
 
