@@ -28,7 +28,7 @@ if type conda 2>/dev/null; then
       echo -e $CYAN"creating conda environment ${ENV_NAME}"$NC
       conda create -y --name ${ENV_NAME} python=3.10
       conda activate ${ENV_NAME}
-      mamba install -y -c conda-forge rdkit
+#      mamba install -y -c conda-forge rdkit
       mamba install -y pip
       pip install -r docker/airflow/requirements.txt
       pip install -r test_requirements.txt
