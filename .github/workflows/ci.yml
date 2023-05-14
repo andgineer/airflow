@@ -26,6 +26,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        conda init bash
         conda create -y --name airflow python=${{ matrix.python-version }}
         conda activate airflow
         mamba install -y -c conda-forge rdkit
