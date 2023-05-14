@@ -6,6 +6,8 @@
 # Example
 #  ./up.sh airflow-db
 
+mkdir -p etl/logs
+
 ./compose.sh \
   up -d --build \
   "$@"

@@ -9,8 +9,8 @@ class EnvVar:
 
 
 class Config:
-    proxy_login = os.environ[EnvVar.proxy_login]
-    proxy_password = os.environ[EnvVar.proxy_password]
+    proxy_login = os.getenv(EnvVar.proxy_login)
+    proxy_password = os.getenv(EnvVar.proxy_password)
     xchng_folder = os.getenv(EnvVar.xchng_folder)  # we need it on workers only so it's ok if
     # this is empty for Airflow scheduler
 

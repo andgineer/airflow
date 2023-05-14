@@ -21,11 +21,15 @@ if type conda 2>/dev/null; then
     if conda info --envs | grep "\b${ENV_NAME}\s"; then
       echo -e $CYAN"activating environment ${ENV_NAME}"$NC
     else
-      echo -e $CYAN"creating environment ${ENV_NAME}"$NC
-      conda create -y --name ${ENV_NAME} python=3.7
+      if [[ -z $(conda list --name base | grep mamba) ]]; then
+        echo "..installing mamba.."
+        conda install mamba --name base -c conda-forge
+      fi
+      echo -e $CYAN"creating conda environment ${ENV_NAME}"$NC
+      conda create -y --name ${ENV_NAME} python=3.10
       conda activate ${ENV_NAME}
-      conda install -y -c conda-forge rdkit
-      conda install -y pip
+      mamba install -y -c conda-forge rdkit
+      mamba install -y pip
       pip install -r docker/airflow/requirements.txt
       pip install -r test_requirements.txt
       conda deactivate  # RE-activate conda env so python will have access to conda installed deps

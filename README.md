@@ -17,7 +17,7 @@ and [command-line interface](https://airflow.apache.org/docs/stable/usage-cli.ht
 
 ## How to run
 
-    mkdir -p /etl/logs  # you have to create it manually so it will have right permissions
+    ./compose.sh build
     ./up.sh
     
 Airflow: http://127.0.0.1:8080/admin/
