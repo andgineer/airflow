@@ -4,8 +4,9 @@
 #
 
 airflow db init
-airflow connections --add --conn_id dev_db --conn_uri "${DEV_DB_URL}"
-airflow connections --add --conn_id file_local --conn_extra "{\"path\": \"/ingest\"}" --conn_type fs
+airflow connections add dev_db --conn-uri "${DEV_DB_URL}"
+airflow connections add file_local --conn-extra "{\"path\": \"/ingest\"}" --conn-type fs
+airflow users  create --role Admin --username admin --email admin --firstname admin --lastname admin --password admin
 cd /
 PYTHONPATH=/etl alembic upgrade head
 airflow webserver &

@@ -1,5 +1,5 @@
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators.python import PythonOperator
 from airflow.models.taskinstance import TaskInstance
 from datetime import timedelta
 from _default import default_args
