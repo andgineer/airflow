@@ -18,7 +18,7 @@ x-airflow-connections: &airflow-connections
 x-airflow-volumes: &airflow-volumes
   volumes:
     - ./etl:/etl
-    - ./etl/logs:/opt/airflow/logs
+    - ./airflow-logs:/opt/airflow/logs
     - ./alembic:/alembic
 
 services:

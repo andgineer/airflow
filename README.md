@@ -20,7 +20,7 @@ and [command-line interface](https://airflow.apache.org/docs/stable/usage-cli.ht
     ./compose.sh build
     ./up.sh
     
-Airflow: http://127.0.0.1:8080/admin/ (user admin, password admin)
+Airflow: http://127.0.0.1:8080/home (user admin, password admin)
 Flower: http://127.0.0.1:5551/dashboard
 
 ETL tasks (DAGs) are in `etl/`. They mounted into Airflow containers so all your

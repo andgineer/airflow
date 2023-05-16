@@ -6,4 +6,4 @@
 *.DS_Store
 *.tar
 **/__pycache__
-etl/logs
+airflow-logs/

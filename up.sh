@@ -6,7 +6,7 @@
 # Example
 #  ./up.sh airflow-db
 
-mkdir -p etl/logs
+mkdir -p airflow-logs
 
 ./compose.sh \
   up -d --build \
