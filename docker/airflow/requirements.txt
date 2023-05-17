@@ -3,4 +3,4 @@ requests
 click
 sqlalchemy
 apache-airflow
-pyarrow<10.1.0,>=10.0.1; extra == "pandas"
+pyarrow>=10.0.1; extra == "pandas"
