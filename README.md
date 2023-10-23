@@ -46,7 +46,10 @@ We can use `docker-compose` key `--scale` but better add more machines with work
 
 ### Testing airflow tasks
 
+#### Create virtual environment
     . ./activate.sh
+
+#### Run tests
     pytest
 
 ### Create migration script for ETL DB

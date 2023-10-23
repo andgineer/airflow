@@ -1,8 +1,10 @@
 import os.path
+import os
 import sys
 
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../etl'))
+os.environ['AIRFLOW_CONFIG'] = 'tests/resources/airflow_test.cfg'
 
 import modules_load
 import logging
