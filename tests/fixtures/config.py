@@ -9,21 +9,15 @@ from airflow.utils import db as airflow_db
 
 from _config import Config
 
-pytest_plugins = ["helpers_namespace"]
-
-
 class TestConfig(Config):
     dags_folder = 'etl'  # relative to project root where we run pytest
 
-
 @pytest.fixture(scope='session')
 def config():
-    os.environ['AIRFLOW_CONFIG'] = 'tests/resources/airflow_test.cfg'
-    airflow_db.resetdb()
+    # airflow_db.resetdb()
     initdb()
 
     return TestConfig()
-
 
 @pytest.fixture(scope='session')
 def dag_bag(dag_files):
@@ -31,7 +25,6 @@ def dag_bag(dag_files):
     for file_name in dag_files:
         dag_bag.process_file(file_name, only_if_updated=False)
     return dag_bag
-
 
 @pytest.fixture
 def dag_hello_world(dag_bag):
