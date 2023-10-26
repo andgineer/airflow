@@ -4,3 +4,5 @@ click
 sqlalchemy
 apache-airflow
 pyarrow>=10.0.1; extra == "pandas"
+celery
+redis

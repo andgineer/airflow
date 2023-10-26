@@ -53,6 +53,7 @@ services:
     depends_on:
       - airflow-db
       - airflow-broker
+      # todo: should wait for airflow-db
     ports:
       # Celery Flower
       - 5551:5555

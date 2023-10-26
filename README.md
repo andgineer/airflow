@@ -21,7 +21,7 @@ and [command-line interface](https://airflow.apache.org/docs/stable/usage-cli.ht
     ./up.sh
     
 Airflow: http://127.0.0.1:8080/home (user admin, password admin)
-Flower: http://127.0.0.1:5551/dashboard
+Flower: http://127.0.0.1:5551
 
 ETL tasks (DAGs) are in `etl/`. They mounted into Airflow containers so all your
 changes live update your DAGs.
