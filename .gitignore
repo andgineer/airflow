@@ -8,3 +8,6 @@
 **/__pycache__
 airflow-logs/
 **/logs/
+coverage.xml
+.coverage
+airflow.db
