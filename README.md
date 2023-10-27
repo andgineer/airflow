@@ -1,4 +1,4 @@
-[![CI status](https://github.com/andgineer/airflow/workflows/CI/badge.svg)](https://github.com/andgineer/airflow/actions)
+[![CI status](https://github.com/andgineer/airflow/workflows/ci/badge.svg)](https://github.com/andgineer/airflow/actions)
 [![Coverage](https://raw.githubusercontent.com/andgineer/airflow/python-coverage-comment-action-data/badge.svg)](https://htmlpreview.github.io/?https://github.com/andgineer/airflow/blob/python-coverage-comment-action-data/htmlcov/index.html)
 # Apache Airflow + Anaconda
 
