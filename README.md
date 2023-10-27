@@ -1,7 +1,10 @@
+[![CI status](https://github.com/andgineer/airflow/workflows/CI/badge.svg)](https://github.com/andgineer/airflow/actions)
+[![Coverage](https://raw.githubusercontent.com/andgineer/airflow/python-coverage-comment-action-data/badge.svg)](https://htmlpreview.github.io/?https://github.com/andgineer/airflow/blob/python-coverage-comment-action-data/htmlcov/index.html)
 # Apache Airflow + Anaconda
 
-Template for local debugging Apache Airflow DAGs.
-With local Airflow scheduler and workers and live reload of DAGs.
+Docker-compose environment for local debugging Apache Airflow DAGs.
+
+With local Airflow scheduler and workers, DB and live reload of DAGs.
 
 Minicoda already installed so you can use any machine learning or data-science
 package from Anaconda in your ETL pipelines.
