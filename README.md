@@ -9,11 +9,11 @@ With local Airflow scheduler and workers, DB and live reload of DAGs.
 Minicoda already installed so you can use any machine learning or data-science
 package from Anaconda in your ETL pipelines.
 
-[Apache Airflow](https://airflow.apache.org/docs/stable/) is a workflow management platform. 
-This makes it easier to build data pipelines, monitor them, and perform ETL operations. 
+[Apache Airflow](https://airflow.apache.org/docs/stable/) is a workflow management platform.
+This makes it easier to build data pipelines, monitor them, and perform ETL operations.
 
-Airflow pipelines are configuration as Python code, allowing for dynamic pipeline 
-generation. 
+Airflow pipelines are configuration as Python code, allowing for dynamic pipeline
+generation.
 
 Apache Airflow provides you [WebUI](https://airflow.apache.org/docs/stable/ui.html)
 and [command-line interface](https://airflow.apache.org/docs/stable/usage-cli.html).
@@ -22,7 +22,7 @@ and [command-line interface](https://airflow.apache.org/docs/stable/usage-cli.ht
 
     ./compose.sh build
     ./up.sh
-    
+
 Airflow: http://127.0.0.1:8080/home (user admin, password admin)
 Flower: http://127.0.0.1:5551
 
@@ -41,7 +41,7 @@ We create DB for ETL tasks on the same server as airflow DB
 Add it to airflow env connection as `etl_db`.
 
 And add to airflow env connection to some `dev DB` as `db_dev`.
-Assuming this is business DB our ETL should work with. 
+Assuming this is business DB our ETL should work with.
 
 ## Scaling workers
 
@@ -64,6 +64,6 @@ All models should inherits from `db.models.Base`.
 # compare DB models and current ETL DB and create DB upgrade script in alembic/versions
 ./alembic.sh revision --autogenerate -m \"Schema changes.\"
 
-# apply script to the DB so after that DB meta data will reflect DB models  
+# apply script to the DB so after that DB meta data will reflect DB models
 ./alembic.sh upgrade head
 ```

@@ -1,16 +1,16 @@
 from datetime import datetime
-from airflow.models import Connection
-from airflow import settings
 from typing import Iterable
 
+from airflow import settings
+from airflow.models import Connection
 
-DB_CONN_PREFIX='db_'
+DB_CONN_PREFIX = "db_"
 
 default_args = {
-    'owner': 'airflow',
-    'start_date': datetime(2020, 8, 16),
-    'email': ['andrey@sorokin.engineer'],
-    'email_on_failure': True,
+    "owner": "airflow",
+    "start_date": datetime(2020, 8, 16),
+    "email": ["andrey@sorokin.engineer"],
+    "email_on_failure": True,
 }
 
 
@@ -22,7 +22,7 @@ def dbs_to_update():
     try:
         conns: Iterable[Connection] = (
             session.query(Connection.conn_id)
-            .filter(Connection.conn_id.ilike(f'{DB_CONN_PREFIX}%'))
+            .filter(Connection.conn_id.ilike(f"{DB_CONN_PREFIX}%"))
             .all()
         )
     finally:
