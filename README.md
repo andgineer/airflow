@@ -4,13 +4,13 @@
 
 | Name                                  |    Stmts |     Miss |   Cover |   Missing |
 |-------------------------------------- | -------: | -------: | ------: | --------: |
-| etl/\_config.py                       |       17 |        3 |     82% |     34-36 |
-| etl/\_connections.py                  |       39 |       39 |      0% |      1-82 |
-| etl/\_default.py                      |       12 |        5 |     58% |     21-30 |
-| etl/operators/create\_pool.py         |       21 |       21 |      0% |      1-28 |
-| etl/operators/sqlalchemy\_operator.py |       22 |       22 |      0% |      1-38 |
-| etl/pandas\_hello.py                  |       14 |        0 |    100% |           |
-|                             **TOTAL** |  **125** |   **90** | **28%** |           |
+| etl/\_config.py                       |       17 |        3 |     82% |     36-38 |
+| etl/\_connections.py                  |       39 |       39 |      0% |      1-76 |
+| etl/\_default.py                      |       12 |        5 |     58% |     19-28 |
+| etl/operators/create\_pool.py         |       22 |       22 |      0% |      1-33 |
+| etl/operators/sqlalchemy\_operator.py |       23 |       23 |      0% |      1-43 |
+| etl/pandas\_hello.py                  |       20 |        0 |    100% |           |
+|                             **TOTAL** |  **133** |   **92** | **31%** |           |
 
 
 ## Setup coverage badge
