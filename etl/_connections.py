@@ -20,7 +20,7 @@ def conn_id_to_name(conn_id: str) -> str:
     return "_".join(conn_id.split("_")[1:])
 
 
-def dbs_to_update() -> List:
+def dbs_to_update() -> List[str]:
     """Airflow Connections with conn_id started with `DB_CONN_PREFIX`."""
     session = settings.Session()
     try:
@@ -38,9 +38,7 @@ def dbs_to_update() -> List:
 
 
 def files_conns(conn_type: str) -> Iterable[Connection]:
-    """
-    Airflow Connections with conn_id started with `FILE_PREFIX` and specific `conn_type`
-    """
+    """Airflow Connections with conn_id started with `FILE_PREFIX` and specific `conn_type`."""
     session = settings.Session()
     try:
         conns: Iterable[Connection] = (
@@ -60,18 +58,14 @@ def files_conns(conn_type: str) -> Iterable[Connection]:
     return conns
 
 
-def files_conn_ids(conn_type: str) -> List:
-    """
-    Airflow Connection IDs with conn_id started with `FILE_PREFIX` and specific `conn_type`
-    """
+def files_conn_ids(conn_type: str) -> List[str]:
+    """Airflow Connection IDs with conn_id started with `FILE_PREFIX` and specific `conn_type`."""
     conns = files_conns(conn_type)
     return [conn.conn_id for conn in conns]
 
 
-def files_folders(conn_type: str) -> List:
-    """
-    Airflow Connections with conn_id started with `FILE_PREFIX` and specific `conn_type`
-    """
+def files_folders(conn_type: str) -> List[str]:
+    """Airflow Connections with conn_id started with `FILE_PREFIX` and specific `conn_type`."""
     conns = files_conns(conn_type)
     result = []
     for conn in conns:

@@ -1,10 +1,14 @@
 from datetime import timedelta
+from typing import Any
 
 from _default import default_args
 
 from airflow import DAG
 from airflow.models.taskinstance import TaskInstance
 from airflow.operators.python import PythonOperator
+from logging import getLogger
+
+log = getLogger(__name__)
 
 dag = DAG(
     "HelloPandas",
@@ -14,14 +18,19 @@ dag = DAG(
 )
 
 
-def word_dataset_task(task_instance: TaskInstance, word: str, **kwargs):
-    """Print the word and return it"""
+def word_dataset_task(
+    task_instance: TaskInstance, word: str, **kwargs  # pylint: disable=unused-argument
+) -> str:
+    """Print the word and return it."""
+    log.info(f"word_dataset_task got `{word}`")
     return word
 
 
-def merge_task(task_instance: TaskInstance, **kwargs):
-    """Merge the two datasets"""
-    return task_instance.xcom_pull(task_ids=["hello_dataset", "pandas_dataset"])
+def merge_task(task_instance: TaskInstance, **kwargs) -> Any:  # pylint: disable=unused-argument
+    """Merge the two datasets."""
+    result = task_instance.xcom_pull(task_ids=["hello_dataset", "pandas_dataset"])
+    log.info(f"merge_task emit `{result}`")
+    return result
 
 
 pandas_dataset = PythonOperator(
@@ -45,4 +54,4 @@ merge = PythonOperator(
     provide_context=True,
 )
 
-[pandas_dataset, hello_dataset] >> merge
+[pandas_dataset, hello_dataset] >> merge  # pylint: disable=pointless-statement

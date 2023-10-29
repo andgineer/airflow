@@ -15,9 +15,7 @@ default_args = {
 
 
 def dbs_to_update():
-    """
-    Airflow Connections with conn_id started with `BB_DB_CONN_PREFIX`
-    """
+    """Airflow Connections with conn_id started with `BB_DB_CONN_PREFIX`."""
     session = settings.Session()
     try:
         conns: Iterable[Connection] = (

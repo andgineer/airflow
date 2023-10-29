@@ -4,6 +4,7 @@ from typing import Optional
 
 class EnvVar:
     """Environment variables."""
+
     proxy_login = "PROXY_LOGIN"
     proxy_password = "PROXY_PASSWORD"
     xchng_folder = "WORKERS_XCHNG_FOLDER"
@@ -11,6 +12,7 @@ class EnvVar:
 
 class Config:
     """Configuration."""
+
     proxy_login = os.getenv(EnvVar.proxy_login)
     proxy_password = os.getenv(EnvVar.proxy_password)
     xchng_folder = os.getenv(EnvVar.xchng_folder)  # we need it on workers only so it's ok if
@@ -30,7 +32,7 @@ _config: Optional[Config] = None
 
 def config() -> Config:
     """Get config."""
-    global _config
+    global _config  # pylint: disable=global-statement
     if _config is None:
         _config = Config()
     return _config

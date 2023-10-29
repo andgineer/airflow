@@ -47,6 +47,9 @@ Assuming this is business DB our ETL should work with.
 
 We can use `docker-compose` key `--scale` but better add more machines with workers.
 
+## Email
+To send emails from Airflow you need to configure SMTP server in `airflow.cfg` file.
+
 ### Testing airflow tasks
 
 #### Create virtual environment
