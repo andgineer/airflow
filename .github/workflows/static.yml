@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
         with:
-          python-version: 3.x
+          python-version: 3.11
       - run: |
           pip install -r docker/airflow/requirements.txt
           pip install "apache-airflow[celery,postgres,pandas,redis]==2.7.2" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.7.2/constraints-3.11.txt"
