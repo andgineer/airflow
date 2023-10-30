@@ -4,7 +4,7 @@ from typing import Iterable, List
 from sqlalchemy import and_
 
 from airflow import settings
-from airflow.models import Connection
+from airflow.models import Connection  # pylint: disable=ungrouped-imports
 
 log = logging.getLogger()
 
