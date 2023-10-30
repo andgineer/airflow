@@ -2,8 +2,8 @@ from typing import Any
 
 from sqlalchemy.orm import Session, sessionmaker
 
-from airflow.hooks.postgres_hook import PostgresHook
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators.python import PythonOperator
+from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.utils.decorators import apply_defaults
 
 
@@ -14,18 +14,18 @@ def get_session(conn_id: str) -> Session:
     return sessionmaker(bind=engine)()
 
 
-class SQLAlchemyOperator(PythonOperator):
+class SQLAlchemyOperator(PythonOperator):  # type: ignore
     """PythonOperator with SQLAlchemy session management.
 
     Creates session for the Python callable
-    and commit/rollback it afterwards.
+    and commit/rollback it afterward.
 
     Set `conn_id` with you DB connection.
 
     Pass `session` parameter to the python callable.
     """
 
-    @apply_defaults
+    @apply_defaults  # type: ignore
     def __init__(self, conn_id: str, *args: Any, **kwargs: Any) -> None:
         """Init."""
         self.conn_id = conn_id

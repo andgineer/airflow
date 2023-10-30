@@ -1,10 +1,9 @@
-from sqlalchemy.orm import Session
+from psycopg2.extensions import connection
 
-from airflow.hooks.postgres_hook import PostgresHook
+from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 
-def get_session(conn_id: str) -> Session:
+def get_session(conn_id: str) -> connection:
     """Get a SQLAlchemy session."""
     hook = PostgresHook(postgres_conn_id=conn_id)
-    cursor = hook.get_conn()
-    return cursor
+    return hook.get_conn()

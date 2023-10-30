@@ -2,7 +2,4 @@ httpx
 requests
 click
 sqlalchemy
-apache-airflow
-pyarrow>=10.0.1; extra == "pandas"
-celery
-redis
+# assume that in the docker already installed apache-airflow[celery,postgres,pandas,redis]

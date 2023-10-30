@@ -3,17 +3,17 @@ from typing import Any
 from airflow.api.common.experimental.pool import create_pool, get_pool
 from airflow.exceptions import PoolNotFound
 from airflow.models import BaseOperator
-from airflow.utils import apply_defaults
+from airflow.utils.decorators import apply_defaults
 
 
-class CreatePoolOperator(BaseOperator):
+class CreatePoolOperator(BaseOperator):  # type: ignore
     """Create a pool if it does not exist."""
 
     ui_color = "#b8e9ee"
 
-    @apply_defaults
+    @apply_defaults  # type: ignore
     def __init__(
-        self, name: str, slots: int, description: str = "", *args: Any, **kwargs: Any
+        self, *args: Any, name: str, slots: int, description: str = "", **kwargs: Any
     ) -> None:
         """Init."""
         super().__init__(*args, **kwargs)
@@ -21,13 +21,13 @@ class CreatePoolOperator(BaseOperator):
         self.slots = slots
         self.name = name
 
-    def execute(self, context):
+    def execute(self, context: Any) -> None:
         """Execute."""
         try:
             pool = get_pool(name=self.name)
             if pool:
-                self.log(f"Pool exists: {pool}")
+                self._log.info(f"Pool exists: {pool}")
                 return
         except PoolNotFound:
             pool = create_pool(name=self.name, slots=self.slots, description=self.description)
-            self.log(f"Created pool: {pool}")
+            self._log.info(f"Created pool: {pool}")
