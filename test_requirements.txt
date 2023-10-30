@@ -3,7 +3,7 @@ pytest-asyncio
 pytest-cov
 
 pydocstyle
-Pylint
+Pylint==3.0.2
 mypy
 pre-commit
 pip-tools
