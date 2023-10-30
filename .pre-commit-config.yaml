@@ -33,6 +33,7 @@ repos:
       - id: isort
         name: Sorts imports
         args: [
+            "-v",
             # Align isort with black formatting
             "--multi-line=3",
             "--trailing-comma",
