@@ -72,7 +72,8 @@ repos:
     -   id: mypy
         args: ["--install-types", "--non-interactive", "--strict", "--implicit-reexport", "--warn-unused-ignores", "--cache-fine-grained", "--no-namespace-packages"]
 
-  - repo: local
+  - repo: https://github.com/PyCQA/pylint
+    rev: v3.0.1
     hooks:
       - id: pylint
         name: Pylint
@@ -80,6 +81,9 @@ repos:
         files: \.py$
         language: python
 
+  - repo: https://github.com/PyCQA/pydocstyle
+    rev: 6.3.0
+    hooks:
       - id: pydocstyle
         name: docstrings
         entry: pydocstyle

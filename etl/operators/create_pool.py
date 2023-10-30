@@ -21,7 +21,7 @@ class CreatePoolOperator(BaseOperator):  # type: ignore
         self.slots = slots
         self.name = name
 
-    def execute(self, context: Any) -> None:
+    def execute(self, context: Any) -> None:  # pylint: disable=unused-argument
         """Execute."""
         try:
             pool = get_pool(name=self.name)

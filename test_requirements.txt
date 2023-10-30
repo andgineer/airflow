@@ -2,9 +2,5 @@ pytest
 pytest-asyncio
 pytest-cov
 
-pydocstyle
-Pylint==3.0.2
-mypy
 pre-commit
 pip-tools
-black
