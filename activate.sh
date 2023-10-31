@@ -30,8 +30,8 @@ if type conda 2>/dev/null; then
       conda activate ${ENV_NAME}
 #      mamba install -y -c conda-forge rdkit
       mamba install -y pip
-      pip install -r docker/airflow/requirements.txt
       pip install "apache-airflow[celery,postgres,pandas,redis]==2.7.2" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.7.2/constraints-3.11.txt"
+      pip install -r docker/airflow/requirements.txt
       pip install -r test_requirements.txt
       conda deactivate  # RE-activate conda env so python will have access to conda installed deps
     fi

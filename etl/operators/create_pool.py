@@ -23,6 +23,7 @@ class CreatePoolOperator(BaseOperator):  # type: ignore
 
     def execute(self, context: Any) -> None:  # pylint: disable=unused-argument
         """Execute."""
+        assert self._log
         try:
             pool = get_pool(name=self.name)
             if pool:
