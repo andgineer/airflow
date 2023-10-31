@@ -14,7 +14,7 @@ def get_session(conn_id: str) -> Session:
     return sessionmaker(bind=engine)()
 
 
-class SQLAlchemyOperator(PythonOperator):  # type: ignore
+class SQLAlchemyOperator(PythonOperator):
     """PythonOperator with SQLAlchemy session management.
 
     Creates session for the Python callable
@@ -25,7 +25,7 @@ class SQLAlchemyOperator(PythonOperator):  # type: ignore
     Pass `session` parameter to the python callable.
     """
 
-    @apply_defaults  # type: ignore
+    @apply_defaults
     def __init__(self, conn_id: str, *args: Any, **kwargs: Any) -> None:
         """Init."""
         self.conn_id = conn_id

@@ -6,12 +6,12 @@ from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
 
-class CreatePoolOperator(BaseOperator):  # type: ignore
+class CreatePoolOperator(BaseOperator):
     """Create a pool if it does not exist."""
 
     ui_color = "#b8e9ee"
 
-    @apply_defaults  # type: ignore
+    @apply_defaults
     def __init__(
         self, *args: Any, name: str, slots: int, description: str = "", **kwargs: Any
     ) -> None:

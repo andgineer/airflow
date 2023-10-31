@@ -26,11 +26,13 @@ if type conda 2>/dev/null; then
         conda install mamba --name base -c conda-forge
       fi
       echo -e $CYAN"creating conda environment ${ENV_NAME}"$NC
-      conda create -y --name ${ENV_NAME} python=3.10
+      conda create -y --name ${ENV_NAME} python=3.11
       conda activate ${ENV_NAME}
 #      mamba install -y -c conda-forge rdkit
       mamba install -y pip
+      export SYSTEM_VERSION_COMPAT=0  # workaround for Google-re2 https://github.com/conda-forge/google-re2-feedstock/issues/6
       pip install "apache-airflow[celery,postgres,pandas,redis]==2.7.2" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.7.2/constraints-3.11.txt"
+      unset SYSTEM_VERSION_COMPAT
       pip install -r docker/airflow/requirements.txt
       pip install -r test_requirements.txt
       conda deactivate  # RE-activate conda env so python will have access to conda installed deps
