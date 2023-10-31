@@ -7,10 +7,10 @@
 | etl/\_config.py                       |       17 |        3 |     82% |     36-38 |
 | etl/\_connections.py                  |       39 |       39 |      0% |      1-76 |
 | etl/\_default.py                      |       12 |        5 |     58% |     19-28 |
-| etl/operators/create\_pool.py         |       22 |       22 |      0% |      1-33 |
+| etl/operators/create\_pool.py         |       23 |       23 |      0% |      1-34 |
 | etl/operators/sqlalchemy\_operator.py |       23 |       23 |      0% |      1-43 |
 | etl/pandas\_hello.py                  |       20 |        0 |    100% |           |
-|                             **TOTAL** |  **133** |   **92** | **31%** |           |
+|                             **TOTAL** |  **134** |   **93** | **31%** |           |
 
 
 ## Setup coverage badge
