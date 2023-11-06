@@ -6,7 +6,7 @@ Docker-compose environment for local debugging Apache Airflow DAGs.
 
 With local Airflow scheduler and workers, DB and live reload of DAGs.
 
-Minicoda already installed so you can use any machine learning or data-science
+Minicoda already installed, so you can use any machine learning or data-science
 package from Anaconda in your ETL pipelines.
 
 [Apache Airflow](https://airflow.apache.org/docs/stable/) is a workflow management platform.
