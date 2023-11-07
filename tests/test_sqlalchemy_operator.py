@@ -4,19 +4,6 @@ from airflow.models import DAG
 from datetime import datetime
 from operators.sqlalchemy_operator import SQLAlchemyOperator
 
-# Constants for the tests
-DEFAULT_DATE = datetime(2021, 1, 1)
-TEST_DAG_ID = 'unit_test_dag'
-
-
-@pytest.fixture
-def dag():
-    return DAG(
-        dag_id=TEST_DAG_ID,
-        default_args={'owner': 'airflow', 'start_date': DEFAULT_DATE},
-        schedule_interval='@daily',
-    )
-
 
 def test_sqlalchemy_operator_initialization(dag):
     conn_id = 'my_postgres_conn'

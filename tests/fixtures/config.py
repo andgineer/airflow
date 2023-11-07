@@ -1,9 +1,15 @@
+from datetime import datetime
+
 import pytest
 from airflow import models
+from airflow.models import DAG
 from airflow.utils.db import resetdb
 
-
 from _config import Config
+
+
+DEFAULT_DATE = datetime(2021, 1, 1)
+TEST_DAG_ID = 'unit_test_dag'
 
 
 class TestConfig(Config):
@@ -29,4 +35,10 @@ def dag_hello_world(dag_bag):
     return dag_bag.get_dag('HelloPandas')
 
 
-
+@pytest.fixture
+def dag():
+    return DAG(
+        dag_id=TEST_DAG_ID,
+        default_args={'owner': 'airflow', 'start_date': DEFAULT_DATE},
+        schedule_interval='@daily',
+    )
