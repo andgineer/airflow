@@ -6,8 +6,6 @@ from airflow.operators.python import PythonOperator
 from airflow.hooks.dbapi import DbApiHook
 from airflow.utils.decorators import apply_defaults
 
-import logging
-
 
 def get_session(conn_id: str) -> Session:
     """Get SQLAlchemy session."""

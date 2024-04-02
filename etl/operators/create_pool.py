@@ -1,4 +1,3 @@
-from multiprocessing import Pool
 from typing import Any
 
 from airflow.utils.session import create_session
@@ -26,7 +25,9 @@ class CreatePoolOperator(BaseOperator):
             if pool := session.query(Pool).filter(Pool.pool == self.name).first():
                 self.log.info("Pool exists: %s", pool)
             else:
-                pool = Pool(pool=self.name, slots=self.slots, description=self.description)
+                pool = Pool(
+                    pool=self.name, slots=self.slots, description=self.description
+                )
                 session.add(pool)
                 session.commit()
                 self.log.info("Created pool: %s", pool)
