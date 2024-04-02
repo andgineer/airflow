@@ -55,7 +55,7 @@ def test_pandas_dataset_task(dag_bag):
             schedulable_tis, _ = dag_run.update_state(session=session)
             for ti in schedulable_tis:
                 ti.task = tasks[ti.task_id]
-                _run_task(ti, session=session)
+                _run_task(ti=ti, session=session)
 
         task_instance = dag_run.get_task_instance(task_pandas.task_id)
         assert task_instance.state == State.SUCCESS

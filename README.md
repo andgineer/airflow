@@ -70,3 +70,7 @@ All models should inherits from `db.models.Base`.
 # apply script to the DB so after that DB meta data will reflect DB models
 ./alembic.sh upgrade head
 ```
+
+## Coverage report
+* [Codecov](https://app.codecov.io/gh/andgineer/airflow/tree/main/etl)
+* [Coveralls](https://coveralls.io/github/andgineer/airflow)

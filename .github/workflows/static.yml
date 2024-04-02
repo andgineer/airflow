@@ -1,3 +1,4 @@
+
 # build docs from docstrings and markdown-file in folder docs
 # publish them as github pages
 #
@@ -14,14 +15,18 @@ on:
       - master
 jobs:
   deploy:
+    env:
+      PRIMARY_PYTHON_VERSION: '3.11'
+      ARFLOW_VERSION: '2.8.2'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: ${{ env.PRIMARY_PYTHON_VERSION  }}
+      - uses: andgineer/uv-venv@v1
       - run: |
-          pip install "apache-airflow[celery,postgres,pandas,redis]==2.7.2" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.7.2/constraints-3.11.txt"
-          pip install -r docker/airflow/requirements.txt
-          pip install -r test_requirements.txt
+          uv pip install "apache-airflow[celery,postgres,pandas,redis]==${ARFLOW_VERSION}" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${ARFLOW_VERSION}/constraints-${PRIMARY_PYTHON_VERSION}.txt"
+          uv pip install -r docker/airflow/requirements.txt
+          uv pip install -r test_requirements.txt
       - run: pre-commit run --verbose --all-files

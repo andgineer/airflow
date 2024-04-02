@@ -18,20 +18,23 @@ dag = DAG(
 )
 
 
-def word_dataset_task(
-    task_instance: TaskInstance, word: str, **kwargs: Any  # pylint: disable=unused-argument
+def word_dataset_task(  # pylint: disable=unused-argument
+    task_instance: TaskInstance,
+    word: str,
+    **kwargs: Any,
 ) -> str:
     """Print the word and return it."""
-    log.info(f"word_dataset_task got `{word}`")
+    log.info("word_dataset_task got `%s`", word)
     return word
 
 
-def merge_task(
-    task_instance: TaskInstance, **kwargs: Any  # pylint: disable=unused-argument
-) -> Any:  # pylint: disable=unused-argument
+def merge_task(  # pylint: disable=unused-argument
+    task_instance: TaskInstance,
+    **kwargs: Any,
+) -> Any:
     """Merge the two datasets."""
     result = task_instance.xcom_pull(task_ids=["hello_dataset", "pandas_dataset"])
-    log.info(f"merge_task emit `{result}`")
+    log.info("merge_task emit `%s`", result)
     return result
 
 

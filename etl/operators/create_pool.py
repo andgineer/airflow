@@ -1,8 +1,8 @@
+from multiprocessing import Pool
 from typing import Any
 
-from airflow.api.common.experimental.pool import create_pool, get_pool
-from airflow.exceptions import PoolNotFound
-from airflow.models import BaseOperator
+from airflow.utils.session import create_session
+from airflow.models import BaseOperator, Pool
 from airflow.utils.decorators import apply_defaults
 
 
@@ -21,14 +21,12 @@ class CreatePoolOperator(BaseOperator):
         self.slots = slots
         self.name = name
 
-    def execute(self, context: Any) -> None:  # pylint: disable=unused-argument
-        """Execute."""
-        assert self._log
-        try:
-            pool = get_pool(name=self.name)
-            if pool:
-                self._log.info(f"Pool exists: {pool}")
-                return
-        except PoolNotFound:
-            pool = create_pool(name=self.name, slots=self.slots, description=self.description)
-            self._log.info(f"Created pool: {pool}")
+    def execute(self, context: Any) -> None:
+        with create_session() as session:
+            if pool := session.query(Pool).filter(Pool.pool == self.name).first():
+                self.log.info("Pool exists: %s", pool)
+            else:
+                pool = Pool(pool=self.name, slots=self.slots, description=self.description)
+                session.add(pool)
+                session.commit()
+                self.log.info("Created pool: %s", pool)
