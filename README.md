@@ -72,5 +72,5 @@ All models should inherits from `db.models.Base`.
 ```
 
 ## Coverage report
-* [Codecov](https://app.codecov.io/gh/andgineer/airflow/tree/main/etl)
+* [Codecov](https://app.codecov.io/gh/andgineer/airflow/tree/master/etl)
 * [Coveralls](https://coveralls.io/github/andgineer/airflow)
