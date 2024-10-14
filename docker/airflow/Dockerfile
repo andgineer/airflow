@@ -15,4 +15,5 @@ RUN echo "export {NO_PROXY,no_proxy}=\$NO_PROXY,\$(getent hosts worker  | awk '{
 COPY airflow.cfg ${AIRFLOW_HOME}/
 COPY alembic.ini /
 COPY start.sh /
+COPY wait-for-postgres.sh /
 CMD /start.sh

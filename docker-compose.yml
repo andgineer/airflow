@@ -50,6 +50,8 @@ services:
     <<: *airflow-volumes
     environment:
       <<: *airflow-connections
+      AIRFLOW_DB_HOST: airflow-db
+      AIRFLOW_DB_PORT: 5432
     depends_on:
       - airflow-db
       - airflow-broker

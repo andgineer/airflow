@@ -3,6 +3,8 @@
 # Init DBs, Airflow Connections, start Airflow Scheduler, webUI & Flower
 #
 
+./wait-for-postgres.sh "$AIRFLOW_DB_HOST" "$AIRFLOW_DB_PORT"
+
 airflow db init
 airflow connections add dev_db --conn-uri "${DEV_DB_URL}"
 airflow connections add file_local --conn-extra "{\"path\": \"/ingest\"}" --conn-type fs
