@@ -1,5 +1,3 @@
-version: '3.4'
-
 # we use env vars values from host. see export_vars.sh
 x-proxies: &proxies
   no_proxy:
@@ -14,6 +12,7 @@ x-airflow-connections: &airflow-connections
   AIRFLOW_DB_PATH:
   AIRFLOW_DB_URL:
   ETL_DB_URL:
+  AIRFLOW_FERNET_KEY: ${AIRFLOW_FERNET_KEY:-upoLmULZvy4Ix_ZapsPs6tsR1X1YmEUPQNEU64_MIZQ=}
 
 x-airflow-volumes: &airflow-volumes
   volumes:
