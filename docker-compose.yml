@@ -51,6 +51,7 @@ services:
       <<: *airflow-connections
       AIRFLOW_DB_HOST: airflow-db
       AIRFLOW_DB_PORT: 5432
+      FLOWER_UNAUTHENTICATED_API: true
     depends_on:
       - airflow-db
       - airflow-broker
