@@ -2,9 +2,8 @@ from typing import Any
 
 from sqlalchemy.orm import Session, sessionmaker
 
-from airflow.operators.python import PythonOperator
-from airflow.hooks.dbapi import DbApiHook
-from airflow.utils.decorators import apply_defaults
+from airflow.providers.standard.operators.python import PythonOperator
+from airflow.providers.common.sql.hooks.sql import DbApiHook
 
 
 def get_session(conn_id: str) -> Session:
@@ -25,7 +24,6 @@ class SQLAlchemyOperator(PythonOperator):
     Pass `session` parameter to the python callable.
     """
 
-    @apply_defaults
     def __init__(self, conn_id: str, *args: Any, **kwargs: Any) -> None:
         """Init."""
         self.conn_id = conn_id

@@ -40,5 +40,5 @@ def dag():
     return DAG(
         dag_id=TEST_DAG_ID,
         default_args={'owner': 'airflow', 'start_date': DEFAULT_DATE},
-        schedule_interval='@daily',
+        schedule='@daily',
     )

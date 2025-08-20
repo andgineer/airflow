@@ -6,7 +6,7 @@ from _default import default_args
 
 from airflow import DAG
 from airflow.models.taskinstance import TaskInstance
-from airflow.operators.python import PythonOperator
+from airflow.providers.standard.operators.python import PythonOperator
 
 log = getLogger(__name__)
 

@@ -2,7 +2,6 @@ from typing import Any
 
 from airflow.utils.session import create_session
 from airflow.models import BaseOperator, Pool
-from airflow.utils.decorators import apply_defaults
 
 
 class CreatePoolOperator(BaseOperator):
@@ -10,7 +9,6 @@ class CreatePoolOperator(BaseOperator):
 
     ui_color = "#b8e9ee"
 
-    @apply_defaults
     def __init__(
         self, *args: Any, name: str, slots: int, description: str = "", **kwargs: Any
     ) -> None:
