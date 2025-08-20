@@ -14,7 +14,7 @@ dag = DAG(
     "HelloPandas",
     default_args=default_args,
     description="Airflow+Anaconda -> perfect marriage",
-    schedule_interval=timedelta(days=1),
+    schedule=timedelta(days=1),
 )
 
 
@@ -42,21 +42,18 @@ pandas_dataset = PythonOperator(
     dag=dag,
     task_id="pandas_dataset",
     python_callable=word_dataset_task,
-    provide_context=True,
     op_kwargs={"word": "Pandas"},
 )
 hello_dataset = PythonOperator(
     dag=dag,
     task_id="hello_dataset",
     python_callable=word_dataset_task,
-    provide_context=True,
     op_kwargs={"word": "Hello"},
 )
 merge = PythonOperator(
     dag=dag,
     task_id="merge",
     python_callable=merge_task,
-    provide_context=True,
 )
 
 [pandas_dataset, hello_dataset] >> merge  # pylint: disable=pointless-statement
