@@ -13,7 +13,7 @@ class CreatePoolOperator(BaseOperator):
         self, *args: Any, name: str, slots: int, description: str = "", **kwargs: Any
     ) -> None:
         """Init."""
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)  # type: ignore[no-untyped-call]
         self.description = description
         self.slots = slots
         self.name = name

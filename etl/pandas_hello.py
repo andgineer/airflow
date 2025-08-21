@@ -10,7 +10,7 @@ from airflow.providers.standard.operators.python import PythonOperator
 
 log = getLogger(__name__)
 
-dag = DAG(
+dag = DAG(  # pylint: disable=unexpected-keyword-arg
     "HelloPandas",
     default_args=default_args,
     description="Airflow+Anaconda -> perfect marriage",

@@ -7,9 +7,9 @@ from airflow.models import Connection
 DB_CONN_PREFIX = "db_"
 
 default_args = {
-    "owner": "airflow", 
+    "owner": "airflow",
     "start_date": datetime(2020, 8, 16),
-    # Note: email settings moved to SmtpNotifier in Airflow v4 
+    # Note: email settings moved to SmtpNotifier in Airflow v4
     # Keeping for v3 compatibility but will need migration to SmtpNotifier later
     "email": ["andrey@sorokin.engineer"],
     "email_on_failure": True,

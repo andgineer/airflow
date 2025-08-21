@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 from typing import Any
 
 from sqlalchemy.orm import Session, sessionmaker
 
-from airflow.providers.standard.operators.python import PythonOperator
 from airflow.providers.common.sql.hooks.sql import DbApiHook
+from airflow.providers.standard.operators.python import PythonOperator
 
 
 def get_session(conn_id: str) -> Session:
@@ -13,7 +15,7 @@ def get_session(conn_id: str) -> Session:
     return sessionmaker(bind=engine)()
 
 
-class SQLAlchemyOperator(PythonOperator):
+class SQLAlchemyOperator(PythonOperator):  # type: ignore[misc]
     """PythonOperator with SQLAlchemy session management.
 
     Creates session for the Python callable
@@ -35,7 +37,9 @@ class SQLAlchemyOperator(PythonOperator):
         session = get_session(self.conn_id)
         try:
             result = self.python_callable(
-                *self.op_args, session=session, **self.op_kwargs
+                *self.op_args,
+                session=session,
+                **self.op_kwargs,
             )
         except Exception:
             session.rollback()

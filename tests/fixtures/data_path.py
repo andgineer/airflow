@@ -1,5 +1,5 @@
 import os.path
-from distutils import dir_util
+import shutil
 from pathlib import Path
 
 import pytest
@@ -38,6 +38,6 @@ def data_path(tmpdir, request) -> Path:
 
     assert os.path.isdir(test_data_dir), \
         f'data_path fixture: Cannot find test data folder {test_data_dir}'
-    dir_util.copy_tree(test_data_dir, str(tmpdir))
+    shutil.copytree(test_data_dir, str(tmpdir), dirs_exist_ok=True)
 
     return Path(tmpdir)
