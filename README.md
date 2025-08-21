@@ -1,21 +1,21 @@
 [![CI status](https://github.com/andgineer/airflow/workflows/ci/badge.svg)](https://github.com/andgineer/airflow/actions)
 [![Coverage](https://raw.githubusercontent.com/andgineer/airflow/python-coverage-comment-action-data/badge.svg)](https://htmlpreview.github.io/?https://github.com/andgineer/airflow/blob/python-coverage-comment-action-data/htmlcov/index.html)
-# Apache Airflow + Anaconda
+# Apache Airflow 3 + Anaconda
 
 Docker-compose environment for local debugging Apache Airflow DAGs.
 
-With local Airflow scheduler and workers, DB and live reload of DAGs.
+With local Airflow scheduler and workers, DB, and live reload of DAGs.
 
-Minicoda already installed, so you can use any machine learning or data-science
+Miniconda already installed, so you can use any machine learning or data science
 package from Anaconda in your ETL pipelines.
 
 [Apache Airflow](https://airflow.apache.org/docs/stable/) is a workflow management platform.
 This makes it easier to build data pipelines, monitor them, and perform ETL operations.
 
-Airflow pipelines are configuration as Python code, allowing for dynamic pipeline
+Airflow pipelines are configured as Python code, allowing for dynamic pipeline
 generation.
 
-Apache Airflow provides you [WebUI](https://airflow.apache.org/docs/stable/ui.html)
+Apache Airflow provides a [Web UI](https://airflow.apache.org/docs/stable/ui.html)
 and [command-line interface](https://airflow.apache.org/docs/stable/usage-cli.html).
 
 ## How to run
@@ -26,26 +26,26 @@ and [command-line interface](https://airflow.apache.org/docs/stable/usage-cli.ht
 Airflow: http://127.0.0.1:8080/home (user admin, password admin)
 Flower: http://127.0.0.1:5551
 
-ETL tasks (DAGs) are in `etl/`. They mounted into Airflow containers so all your
-changes live update your DAGs.
+ETL tasks (DAGs) are in `etl/`. They are mounted into Airflow containers so all your
+changes live-update your DAGs.
 
-## DUGs
+## DAGs
 
-I created demo-DAG `HelloPandas` so you can see that everything is working.
-In the `merge` task logs you should see `Done. Returned value was: ('Hello', 'Pandas')`.
+I created a demo DAG `HelloPandas` so you can see that everything is working.
+In the `merge` task logs, you should see `Done. Returned value was: ('Hello', 'Pandas')`.
 
 ## DBs
 
-We create DB for ETL tasks on the same server as airflow DB
-(postgres in `airflow-db`).
-Add it to airflow env connection as `etl_db`.
+We create a DB for ETL tasks on the same server as the Airflow DB
+(Postgres in `airflow-db`).
+Add it to Airflow environment connections as `etl_db`.
 
-And add to airflow env connection to some `dev DB` as `db_dev`.
-Assuming this is business DB our ETL should work with.
+Also add to Airflow environment connections some `dev DB` as `db_dev`.
+Assuming this is the business DB our ETL should work with.
 
 ## Scaling workers
 
-We can use `docker-compose` key `--scale` but better add more machines with workers.
+We can use `docker-compose` flag `--scale`, but it's better to add more machines with workers.
 
 ## Email
 To send emails from Airflow you need to configure SMTP server in `airflow.cfg` file.
@@ -61,7 +61,7 @@ To send emails from Airflow you need to configure SMTP server in `airflow.cfg` f
 ### Create migration script for ETL DB
 
 Describe your SQLAlchemy objects in `etl/db/models`.
-All models should inherits from `db.models.Base`.
+All models should inherit from `db.models.Base`.
 
 ```console
 # compare DB models and current ETL DB and create DB upgrade script in alembic/versions
