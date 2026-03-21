@@ -3,6 +3,4 @@ pytest-asyncio
 pytest-cov
 
 pre-commit
-pip-tools
-mypy
-pylint
+pyrefly
