@@ -1,10 +1,9 @@
 import logging
-from typing import Iterable, List
-
-from sqlalchemy import and_
+from collections.abc import Iterable
 
 from airflow import settings
 from airflow.models import Connection  # pylint: disable=ungrouped-imports
+from sqlalchemy import and_
 
 log = logging.getLogger()
 
@@ -20,7 +19,7 @@ def conn_id_to_name(conn_id: str) -> str:
     return "_".join(conn_id.split("_")[1:])
 
 
-def dbs_to_update() -> List[str]:
+def dbs_to_update() -> list[str]:
     """Airflow Connections with conn_id started with `DB_CONN_PREFIX`."""
     session = settings.Session()
     try:
@@ -30,7 +29,7 @@ def dbs_to_update() -> List[str]:
             .all()
         )
         conn_ids = [conn.conn_id for conn in conns]
-    except Exception:
+    except Exception:  # noqa: BLE001
         conn_ids = []
     finally:
         session.commit()
@@ -44,27 +43,27 @@ def files_conns(conn_type: str) -> Iterable[Connection]:
         conns: Iterable[Connection] = (
             session.query(Connection)
             .filter(
-                and_(
+                and_(  # pyrefly: ignore[not-callable]
                     Connection.conn_id.ilike(f"{FILE_PREFIX}%"),
                     Connection.conn_type == conn_type,
-                )
+                ),
             )
             .all()
         )
-    except Exception:
+    except Exception:  # noqa: BLE001
         conns = []
     finally:
         session.commit()
     return conns
 
 
-def files_conn_ids(conn_type: str) -> List[str]:
+def files_conn_ids(conn_type: str) -> list[str]:
     """Airflow Connection IDs with conn_id started with `FILE_PREFIX` and specific `conn_type`."""
     conns = files_conns(conn_type)
     return [conn.conn_id for conn in conns]
 
 
-def files_folders(conn_type: str) -> List[str]:
+def files_folders(conn_type: str) -> list[str]:
     """Airflow Connections with conn_id started with `FILE_PREFIX` and specific `conn_type`."""
     conns = files_conns(conn_type)
     result = []

@@ -2,16 +2,15 @@ from __future__ import annotations
 
 from typing import Any
 
-from sqlalchemy.orm import Session, sessionmaker
-
 from airflow.providers.common.sql.hooks.sql import DbApiHook
 from airflow.providers.standard.operators.python import PythonOperator
+from sqlalchemy.orm import Session, sessionmaker
 
 
 def get_session(conn_id: str) -> Session:
     """Get SQLAlchemy session."""
     hook = DbApiHook.get_hook(conn_id=conn_id)
-    engine = hook.get_sqlalchemy_engine()
+    engine = hook.get_sqlalchemy_engine()  # pyrefly: ignore[missing-attribute]
     return sessionmaker(bind=engine)()
 
 

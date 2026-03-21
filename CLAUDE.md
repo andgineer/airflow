@@ -98,14 +98,11 @@ Tests use a custom Airflow environment configured in `tests/conftest.py` that po
 ### Code Quality
 
 ```bash
-# Run pre-commit hooks manually
-pre-commit run --all-files
+# ALWAYS activate the conda environment first before running any command
+. ./activate.sh
 
-# Type checking (mypy with strict mode)
-mypy --strict --ignore-missing-imports etl/
-
-# Linting (pylint with max line length 99)
-pylint --max-line-length=99 etl/
+# Run pre-commit hooks (ALWAYS use this — never run ruff/mypy/pylint/pyrefly directly)
+. ./activate.sh && pre-commit run --all-files
 ```
 
 Pre-commit hooks run ruff (formatter + linter), mypy, and pylint automatically.

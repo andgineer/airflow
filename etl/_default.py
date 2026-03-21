@@ -1,5 +1,5 @@
+from collections.abc import Iterable
 from datetime import datetime
-from typing import Iterable
 
 from airflow import settings
 from airflow.models import Connection

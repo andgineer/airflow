@@ -2,8 +2,7 @@ from datetime import timedelta
 from logging import getLogger
 from typing import Any
 
-from _default import default_args
-
+from _default import default_args  # pyrefly: ignore[missing-import]
 from airflow import DAG
 from airflow.models.taskinstance import TaskInstance
 from airflow.providers.standard.operators.python import PythonOperator
@@ -11,26 +10,26 @@ from airflow.providers.standard.operators.python import PythonOperator
 log = getLogger(__name__)
 
 dag = DAG(  # pylint: disable=unexpected-keyword-arg
-    "HelloPandas",
+    "HelloPandas",  # pyrefly: ignore[bad-argument-type]
     default_args=default_args,
     description="Airflow+Anaconda -> perfect marriage",
     schedule=timedelta(days=1),
 )
 
 
-def word_dataset_task(  # pylint: disable=unused-argument
-    task_instance: TaskInstance,
+def word_dataset_task(
+    _task_instance: TaskInstance,
     word: str,
-    **kwargs: Any,
+    **_kwargs: Any,
 ) -> str:
     """Print the word and return it."""
     log.info("word_dataset_task got `%s`", word)
     return word
 
 
-def merge_task(  # pylint: disable=unused-argument
+def merge_task(
     task_instance: TaskInstance,
-    **kwargs: Any,
+    **_kwargs: Any,
 ) -> Any:
     """Merge the two datasets."""
     result = task_instance.xcom_pull(task_ids=["hello_dataset", "pandas_dataset"])

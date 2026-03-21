@@ -49,14 +49,14 @@ def test_pandas_dataset_task(dag_bag):
     
     # For PythonOperator tasks, we can test the python_callable directly
     result_pandas = task_pandas.python_callable(
-        task_instance=None,  # Not needed for this simple test
+        _task_instance=None,  # Not needed for this simple test
         word='Pandas'
     )
     assert result_pandas == 'Pandas', f'pandas_dataset returned {result_pandas} instead of Pandas'
     
     # Test hello_dataset task  
     result_hello = task_hello.python_callable(
-        task_instance=None,  # Not needed for this simple test
+        _task_instance=None,  # Not needed for this simple test
         word='Hello'
     )
     assert result_hello == 'Hello', f'hello_dataset returned {result_hello} instead of Hello'

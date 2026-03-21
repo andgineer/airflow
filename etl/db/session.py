@@ -1,6 +1,9 @@
-from psycopg2.extensions import connection  # pylint: disable=import-error
-
-from airflow.providers.postgres.hooks.postgres import PostgresHook  # pylint: disable=import-error,no-name-in-module
+from airflow.providers.postgres.hooks.postgres import (  # pyrefly: ignore[missing-import]
+    PostgresHook,  # pylint: disable=import-error,no-name-in-module
+)
+from psycopg2.extensions import (  # pyrefly: ignore[missing-import,missing-source-for-stubs]
+    connection,  # pylint: disable=import-error
+)
 
 
 def get_session(conn_id: str) -> connection:

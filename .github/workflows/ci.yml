@@ -23,9 +23,9 @@ jobs:
       PYTEST_CMD: >
         python -m pytest
         -v
-        --junitxml=pytest.xml 
-        --cov-report=term-missing:skip-covered 
-        --cov=etl 
+        --junitxml=pytest.xml
+        --cov-report=term-missing:skip-covered
+        --cov=etl
         tests/
     runs-on: ${{ matrix.platform }}
     permissions:
@@ -80,5 +80,3 @@ jobs:
     - name: Upload Coverage to Codecov
       if: ${{ matrix.python-version == env.PRIMARY_PYTHON_VERSION && matrix.platform == env.PRIMARY_PLATFORM }}
       uses: codecov/codecov-action@v3
-
-
